@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>System obsługi zgłoszeń</h1>
+    {% if request.user.is_staff %}
+        <h2>Witaj kierowniku</h2>
+<body>
+<h5> W zakładce "zgłoszenia" czekają na Ciebie oczekujące reklamacje </h5>
+</body>
+    {% else %}
+        <h2>Witaj kliencie!</h2>
+<body>
+<h5> Opis programu: </h5>
+<p>Serwis, który ma na celu umożliwić klientowi reklamacje zakupionego produktu. Dodatkowo umożliwia obsługę zgłoszeń przez pracownika wsparcia.
+</p>
+<h5>GŁÓWNE FUNKCJE SYSTEMU:</h5>
+<ul>
+    <li>zgłaszanie reklamacji przez klienta,</li>
+    <li>obługa reklamacji przez wsparcie,</li>
+    <li>wymiana krótkich komentarzy między klientem a wsparciem w przypadku niedomówień</li>
+</ul>
+</body>
+    {% endif %}
+{% endblock %}
