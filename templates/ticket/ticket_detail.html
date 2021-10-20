@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Twoje zgłoszenie:</h1>
+    <p>Zgłaszający: {{ ticket.customer.email }}</p>
+    <p>Status: {{ ticket.ticket_status }}</p>
+    <p>Data utworzenia: {{ ticket.create_time.year }}-{{ ticket.create_time.month }}-{{ ticket.create_time.day }}</p>
+    <p>Godzina utworzenia: {{ ticket.create_time.time }}</p>
+    <p>Typ zgłoszenia: {{ ticket.ticket_type }}</p>
+    <p>Opis: {{ ticket.descriptions }}</p>
+    <p>Nazwisko inżyniera: {{ ticket.engineer.email }}</p>
+
+        <a class="nav-item nav-link active" href="{% url "comment_list" pk=ticket.id %}">Wiadomości</a>
+
+
+<p><a href="{% url "ticket_list" %}">Wróć do listy zgłoszeń</a> </p>
+{% endblock %}

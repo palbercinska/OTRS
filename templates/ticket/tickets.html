@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista zgłoszeń{% endblock %}
+{% block content %}
+    <a class="btn btn-info mb-3" href="{% url "ticket_create" %}">Stwórz zgłoszenie</a>
+<ul>
+    {% for ticket in ticket_list %}
+    <li class="ticket-in-list">
+        <p>Zgłoszenie: data: {{ ticket.create_time.day }}.{{ ticket.create_time.month }}.{{ ticket.create_time.year }}
+            godzina:{{ ticket.create_time.time }} status: {{ ticket.ticket_status }}</p>
+    </li>
+    <a href="{% url "ticket_detail" pk=ticket.id %}"> Więcej informacji</a>
+    <a href="{% url "ticket_update" pk=ticket.id %}">Edycja</a>
+    <a href="{% url "ticket_delete" pk=ticket.id %}">Usuń</a>
+
+{% endfor %}
+    </ul>
+{% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Poprzednia</a>
+{% endif %}
+Strona <span class="w3-badge">{{ page_obj.number }}</span>
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Następna</a>
+{% endif %}
+{% endblock %}
