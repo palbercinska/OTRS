@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista zgłoszeń{% endblock %}
+{% block content %}
+    <h3>Do Rozwiązania</h3>
+    <ul>
+        {% for ticket in ticket_list %}
+            {% if ticket.ticket_status == "OPEN" %}
+                <li class="ticket-in-list">
+                    <p>Zgłoszenie:
+                        data: {{ ticket.create_time.day }}.{{ ticket.create_time.month }}.{{ ticket.create_time.year }}
+                        godzina:{{ ticket.create_time.time }} status: {{ ticket.ticket_status }}</p>
+                </li>
+                <a href="{% url "ticket_panel_detail" pk=ticket.id %}"> Więcej informacji</a>
+                <a href="{% url "ticket_panel_update" pk=ticket.id %}">Rozwiąż</a>
+                <form action="{% url "ticket_panel_status" ticket.id %}" method="POST">
+                    {% csrf_token %}
+                    {% if not ticket.engineer %}
+                        <button type="submit" name="status_id" value="{{ ticket.id }}" class="btn btn-info">OPEN
+                        </button>
+                    {% else %}
+                        PRZYPISANE DO: {{ ticket.engineer.email }}.
+                    {% endif %}
+                    {% if ticket.engineer %}
+                        <button type="submit" name="status_id" value="{{ ticket.id }}" class="btn btn-info">CLOSE
+                        </button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <h3>Do przypisania</h3>
+    <ul>
+        {% for ticket in ticket_list %}
+            {% if ticket.ticket_status == 'PENDING' %}
+                <li class="ticket-in-list">
+                    <p>Zgłoszenie:
+                        data: {{ ticket.create_time.day }}.{{ ticket.create_time.month }}.{{ ticket.create_time.year }}
+                        godzina:{{ ticket.create_time.time }} status: {{ ticket.ticket_status }}</p>
+                </li>
+                <a href="{% url "ticket_panel_detail" pk=ticket.id %}"> Więcej informacji</a>
+                <form action="{% url "ticket_panel_status" ticket.id %}" method="POST">
+                    {% csrf_token %}
+                    {% if not ticket.engineer %}
+                        <button type="submit" name="status_id" value="{{ ticket.id }}" class="btn btn-info">OPEN
+                        </button>
+                    {% else %}
+                        PRZYPISANE DO: {{ ticket.engineer.email }}.
+                    {% endif %}
+                    {% if ticket.engineer %}
+                        <button type="submit" name="status_id" value="{{ ticket.id }}" class="btn btn-info">CLOSE
+                        </button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <h3>Zakończone</h3>
+    <ul>
+        {% for ticket in ticket_list %}
+            {% if ticket.ticket_status == "CLOSE_POSITIVE" or ticket.ticket_status == "CLOSE_NEGATIVE" %}
+                <li class="ticket-in-list">
+                    <p>Zgłoszenie:
+                        data: {{ ticket.create_time.day }}.{{ ticket.create_time.month }}.{{ ticket.create_time.year }}
+                        godzina:{{ ticket.create_time.time }} status: {{ ticket.ticket_status }}</p>
+                </li>
+                <a href="{% url "ticket_panel_detail" pk=ticket.id %}"> Więcej informacji</a>
+                <form action="{% url "ticket_panel_status" ticket.id %}" method="POST">
+                    {% csrf_token %}
+                    {% if not ticket.engineer %}
+                        <button type="submit" name="status_id" value="{{ ticket.id }}" class="btn btn-info">OPEN
+                        </button>
+                    {% else %}
+                        PRZYPISANE DO: {{ ticket.engineer.email }}.
+                    {% endif %}
+                    {% if ticket.engineer %}
+                        <button type="submit" name="status_id" value="{{ ticket.id }}" class="btn btn-info">CLOSE
+                        </button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Poprzednia</a>
+    {% endif %}
+    Strona <span class="w3-badge">{{ page_obj.number }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Następna</a>
+    {% endif %}
+{% endblock %}
