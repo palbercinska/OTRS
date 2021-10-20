@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Wiadomości{% endblock %}
+{% block content %}
+    <a class="btn btn-info mb-3" href="{% url "comment_create" pk=ticket_id %}">Dodaj komentarz</a>
+<ul>
+    {% for comment in comment_list %}
+    <li class="comment-in-list">
+        <h5>{{comment.text}}</h5>
+        <p>Komentarz dodany {{ comment.create_time.day }}.{{ comment.create_time.month }}.{{ comment.create_time.year }} o godzinie: {{ comment.create_time.time }}
+            przez {{ comment.user.email }}</p>
+    </li>
+    <a href="{% url "comment_delete" pk=ticket_id comment_pk=comment.id %}">Usuń</a>
+    </li>
+{% endfor %}
+</ul>
+{% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Poprzednia</a>
+{% endif %}
+Strona <span class="w3-badge">{{ page_obj.number }}</span>
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Następna</a>
+{% endif %}
+<p><a href="{% url "ticket_panel_list" %}">Wróć do listy zgłoszeń</a> </p>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <table>{{ form|crispy }}</table>
+        <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+<p><a href="{% url "comment_list" pk=ticket_id %}">Wróć do listy komentarzy</a> </p>
+{% endblock %}
